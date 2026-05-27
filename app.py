@@ -5,8 +5,10 @@ from models import User, Project, Bug
 from routes.auth import auth
 from routes.projects import project
 from routes.bugs import bug
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bugtracker.db"
