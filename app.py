@@ -6,12 +6,13 @@ from routes.auth import auth
 from routes.projects import project
 from routes.bugs import bug
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bugtracker.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JWT_SECRET_KEY"] = "your-secret-key"
 
