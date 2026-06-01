@@ -1,7 +1,9 @@
 from extensions import db, bcrypt
 from models import User
 from flask import request, jsonify, Blueprint
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
+role = ["admin", "manager"]
 
 auth = Blueprint("auth", __name__)
 
@@ -38,3 +40,15 @@ def login():
         return jsonify({"Token": token, "role": user.role, "name": user.name}), 200
     else:
         return jsonify({"Error": "Wrong Password"}), 401
+
+@auth.route("/users", methods=["GET"])
+@jwt_required()
+def getUsers():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if user.role not in role:
+        return jsonify({"error": "Permission Denied"}), 403
+    
+    users = User.query.all()
+    return jsonify([user.to_dict() for user in users])
