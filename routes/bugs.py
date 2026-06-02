@@ -35,12 +35,16 @@ def add_bug():
     db.session.commit()
     return jsonify(bug.to_dict()), 201
 
+
 @bug.route("/bugs", methods=["GET"])
 @jwt_required()
 def get_bugs():
-  bugs = Bug.query.all()
-  bug = [bug.to_dict() for bug in bugs]
-  return jsonify(bug)
+    project_id = request.args.get("project_id")
+    if project_id:
+        bugs = Bug.query.filter_by(project_id=project_id).all()
+    else:
+        bugs = Bug.query.all()
+    return jsonify([bug.to_dict() for bug in bugs])
 
 @bug.route("/bugs/<int:id>", methods=["GET"])
 @jwt_required()
