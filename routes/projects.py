@@ -35,6 +35,9 @@ def add_project():
 def get_project():
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
+
+    print("USER ID:", user_id)
+    print("USER ROLE:", user.role)
     
     if user.role == "admin" or user.role == "manager":
         projects = Project.query.all()
