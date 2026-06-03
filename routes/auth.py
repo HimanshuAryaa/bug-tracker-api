@@ -37,7 +37,7 @@ def login():
             identity=str(user.id),
             additional_claims={"role": user.role, "name": user.name}
             )
-        return jsonify({"Token": token, "role": user.role, "name": user.name}), 200
+        return jsonify({"Token": token, "role": user.role, "name": user.name, "id": user.id}), 200
     else:
         return jsonify({"Error": "Wrong Password"}), 401
 
