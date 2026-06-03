@@ -83,11 +83,15 @@ def update_project(id):
 def delete_project(id):
     user_id=get_jwt_identity()
     user= User.query.get(user_id)
-    if user.role != "admin":
+    role = ["admin", "manager"]
+    if user.role not in role:
         return jsonify({"Error": "Permission Denied"}), 403
     project = Project.query.get(id)
     if not project:
         return jsonify({"Error": "Project not found"}), 404
-    db.session.delete(project)
-    db.session.commit()
-    return jsonify({"Success": "Project deleted successfully"}), 200
+    if user.role == "admin" or (user.role == "manager" and project.manager_id == int(user_id)):
+        db.session.delete(project)
+        db.session.commit()
+        return jsonify({"Success": "Project deleted successfully"}), 200
+    else:
+        return jsonify({"Error": "Permission Denied"}), 403
