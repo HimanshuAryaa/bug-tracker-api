@@ -52,3 +52,17 @@ def getUsers():
     
     users = User.query.all()
     return jsonify([user.to_dict() for user in users])
+
+@auth.route("/users/<int:id>", methods=["DELETE"])
+@jwt_required()
+def deleteUser(id):
+    user_id=get_jwt_identity()
+    currentUser= User.query.get(user_id)
+    if currentUser.role != "admin":
+        return jsonify({"Error": "Permission Denied"}), 403
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"Error": "User not found"}), 404
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"Success": "User deleted successfully"}), 200
