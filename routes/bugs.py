@@ -71,6 +71,12 @@ def update_bug(id):
       return jsonify({"error": "You are not assigned to this project"}), 403
     if user.role == "tester" and project.tester_id != int(user_id):
       return jsonify({"error": "You are not assigned to this project"}), 403
+  if user.role in ["admin", "tester"]:
+    bug.title = data.get("title", bug.title)
+    bug.description = data.get("description", bug.description)
+    bug.severity = data.get("severity", bug.severity)
+    bug.priority = data.get("priority", bug.priority)
+
   bug.status = data.get("status", bug.status)
   db.session.commit()
   return jsonify(bug.to_dict()), 200

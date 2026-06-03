@@ -33,9 +33,19 @@ def add_project():
 @project.route("/projects", methods=["GET"])
 @jwt_required()
 def get_project():
-    projects = Project.query.all()
-    project = [project.to_dict() for project in projects]
-    return jsonify(project)
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    
+    if user.role == "admin" or user.role == "manager":
+        projects = Project.query.all()
+    elif user.role == "tester":
+        projects = Project.query.filter_by(tester_id=user_id).all()
+    elif user.role == "developer":
+        projects = Project.query.filter_by(developer_id=user_id).all()
+    else:
+        projects = []
+    
+    return jsonify([project.to_dict() for project in projects])
 
 @project.route("/projects/<int:id>", methods=["GET"])
 @jwt_required()
