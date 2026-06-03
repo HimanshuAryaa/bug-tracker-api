@@ -43,6 +43,7 @@ def get_project():
         projects = Project.query.all()
     elif user.role == "tester":
         projects = Project.query.filter_by(tester_id=int(user_id)).all()
+        print("TESTER PROJECTS:", [p.id for p in projects])
     elif user.role == "developer":
         projects = Project.query.filter_by(developer_id=int(user_id)).all()
     else:
