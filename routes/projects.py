@@ -39,9 +39,9 @@ def get_project():
     if user.role == "admin" or user.role == "manager":
         projects = Project.query.all()
     elif user.role == "tester":
-        projects = Project.query.filter_by(tester_id=user_id).all()
+        projects = Project.query.filter_by(tester_id=int(user_id)).all()
     elif user.role == "developer":
-        projects = Project.query.filter_by(developer_id=user_id).all()
+        projects = Project.query.filter_by(developer_id=int(user_id)).all()
     else:
         projects = []
     
