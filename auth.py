@@ -1,0 +1,68 @@
+from extensions import db, bcrypt
+from models import User
+from flask import request, jsonify, Blueprint
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
+role = ["admin", "manager"]
+
+auth = Blueprint("auth", __name__)
+
+
+@auth.route("/register", methods=["POST"])
+def register():
+    data = request.json
+    
+    user = User.query.filter_by(email= data["email"]).first()
+    if user:
+        return jsonify({"error": "Email Already Exist"}), 409
+    
+    has_password = bcrypt.generate_password_hash(data["password"]).decode("utf-8")
+
+    add_user = User(name=data["name"], email=data["email"], password=has_password, role=data["role"])
+    db.session.add(add_user)
+    db.session.commit()
+    return jsonify({"message": "Successfully Registered User"}), 201
+
+
+@auth.route("/login", methods=["POST"])
+def login():
+    
+    data = request.json
+
+    user = User.query.filter_by(email=data["email"]).first()
+    if not user:
+        return jsonify({"Error": "User not found"}), 401
+    if bcrypt.check_password_hash(user.password, data["password"]):
+        token = create_access_token(
+            identity=str(user.id),
+            additional_claims={"role": user.role, "name": user.name}
+            )
+        return jsonify({"Token": token, "role": user.role, "name": user.name}), 200
+    else:
+        return jsonify({"Error": "Wrong Password"}), 401
+
+@auth.route("/users", methods=["GET"])
+@jwt_required()
+def getUsers():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if user.role not in role:
+        return jsonify({"error": "Permission Denied"}), 403
+    
+    users = User.query.all()
+    return jsonify([user.to_dict() for user in users])
+
+@auth.route("/users/<int:id>", methods=["DELETE"])
+@jwt_required()
+def deleteUser():
+    user_id=get_jwt_identity()
+    user= User.query.get(user_id)
+    if user.role != "admin":
+        return jsonify({"Error": "Permission Denied"}), 403
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"Error": "User not found"}), 404
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"Success": "User deleted successfully"}), 200
