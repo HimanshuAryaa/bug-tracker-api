@@ -55,10 +55,10 @@ def getUsers():
 
 @auth.route("/users/<int:id>", methods=["DELETE"])
 @jwt_required()
-def deleteUser():
+def deleteUser(id):
     user_id=get_jwt_identity()
-    user= User.query.get(user_id)
-    if user.role != "admin":
+    currentUser= User.query.get(user_id)
+    if currentUser.role != "admin":
         return jsonify({"Error": "Permission Denied"}), 403
     user = User.query.get(id)
     if not user:
