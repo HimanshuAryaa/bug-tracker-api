@@ -23,11 +23,17 @@ def add_project():
         return jsonify({"error": "Project name already exists"}), 409
     
     if user.role == "admin":
-        project = Project(name=data["name"], description=data["description"], 
-                      manager_id=data["manager_id"], tester_id=data["tester_id"], developer_id=data["developer_id"])
-    else :
-        project = Project(name=data["name"], description=data["description"], 
-                      manager_id=user_id, tester_id=data["tester_id"], developer_id=data["developer_id"]) 
+        manager_id = data["manager_id"]
+    else:
+        manager_id = user_id
+
+    project = Project(
+        name=data["name"],
+        description=data["description"],
+        manager_id=manager_id,
+        tester_id=data["tester_id"],
+        developer_id=data["developer_id"]
+        )
     
     db.session.add(project)
     db.session.commit()
