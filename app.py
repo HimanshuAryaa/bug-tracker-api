@@ -29,6 +29,7 @@ def home():
     return "Bug Tracker API is running!"
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
     print("Tables created!")
 
