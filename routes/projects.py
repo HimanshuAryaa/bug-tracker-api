@@ -21,9 +21,13 @@ def add_project():
     existing = Project.query.filter_by(name=data["name"]).first()
     if existing:
         return jsonify({"error": "Project name already exists"}), 409
-
-    project = Project(name=data["name"], description=data["description"], 
-                      manager_id=user_id, tester_id=data["tester_id"], developer_id=data["developer_id"])
+    
+    if user.role == "admin":
+        project = Project(name=data["name"], description=data["description"], 
+                      manager_id=data["manager_id"], tester_id=data["tester_id"], developer_id=data["developer_id"])
+    else :
+        project = Project(name=data["name"], description=data["description"], 
+                      manager_id=user_id, tester_id=data["tester_id"], developer_id=data["developer_id"]) 
     
     db.session.add(project)
     db.session.commit()
@@ -36,14 +40,10 @@ def get_project():
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
 
-    print("USER ID:", user_id)
-    print("USER ROLE:", user.role)
-    
-    if user.role == "admin" or user.role == "manager":
+    if user.role in role:
         projects = Project.query.all()
     elif user.role == "tester":
         projects = Project.query.filter_by(tester_id=int(user_id)).all()
-        print("TESTER PROJECTS:", [p.id for p in projects])
     elif user.role == "developer":
         projects = Project.query.filter_by(developer_id=int(user_id)).all()
     else:
