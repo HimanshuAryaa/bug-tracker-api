@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bug Tracker - Dashboard</title>
+    <!-- <style>
+        /* Old Style */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .emptyState {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        .emptyState .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .emptyState h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .emptyState p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef0f3;
+        }
+
+        nav {
+            background-color: #2c3e50;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #navBrand span {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        #navRight {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        #navUser {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+        }
+
+        #logout {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .page {
+            padding: 28px 32px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        #addProject {
+            display: none;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #projectsList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+
+        .projectCard {
+            background: white;
+            border: 0.5px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 18px;
+            cursor: pointer;
+            border-top: 3px solid #2c3e50;
+        }
+
+        .projectCard h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        .projectCard p {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        #projectModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.45);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalContent {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 360px;
+        }
+
+        #modalContent h2 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        #modalContent label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+            margin-top: 12px;
+        }
+
+        #modalContent input,
+        #modalContent select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 0.5px solid #ccc;
+            border-radius: 7px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .modalButtons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #closeModal {
+            flex: 1;
+            padding: 9px;
+            border: 0.5px solid #ccc;
+            background: none;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #submitProject {
+            flex: 2;
+            padding: 9px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .cardIcon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .cardFooter {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 0.5px solid #e0e0e0;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: #eef2f7;
+            color: #2c3e50;
+        }
+
+        .projectCard {
+            transition: all 0.2s ease;
+        }
+
+        .projectCard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .deleteBtn {
+            margin-top: 10px;
+            background: none;
+            border: 0.5px solid #e74c3c;
+            color: #e74c3c;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #pNameValidation,
+        #pDescValidation,
+        #testerValidation,
+        #developerValidation {
+            font-size: 10px;
+            color: #e74c3c;
+            margin-top: 4px;
+            min-height: 8px;
+        }
+    </style> -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        nav {
+            height: 70px;
+            padding: 0 32px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #navBrand span {
+            font-size: 22px;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        #navRight {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        #navUser {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        #logout {
+            background: #ef4444;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .page {
+            max-width: 1300px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        #addProject {
+            display: none;
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #addProject:hover {
+            background: #4f46e5;
+        }
+
+        #projectsList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 22px;
+        }
+
+        .projectCard {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            /* cursor: pointer; */
+            transition: .25s;
+        }
+
+        .projectCard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .08);
+        }
+
+        .cardIcon {
+            font-size: 34px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .projectCard h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .projectCard p {
+            color: #64748b;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .cardFooter {
+            display: flex;
+            margin-top: auto;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .badge {
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s;
+            cursor: pointer;
+        }
+
+        .badge:hover {
+            background: #e0e7ff;
+        }
+
+        .projectButton {
+            margin-top: 0%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .editBtn {
+            background: none;
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .editBtn:hover {
+            background: #e0e7ff;
+        }
+
+        .deleteBtn {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+
+        .deleteBtn:hover {
+            background: #fee2e2;
+        }
+
+        .emptyState {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .emptyState .icon {
+            font-size: 70px;
+            margin-bottom: 16px;
+        }
+
+        .emptyState h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .emptyState p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        #projectModal,
+        #editProjectModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .55);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalContent,
+        #editModalContent {
+            width: 500px;
+            max-width: 95%;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, .15);
+        }
+
+        #modalContent h2,
+        #editModalContent h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        #modalContent label,
+        #editModalContent label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        #modalContent input,
+        #modalContent textarea,
+        #modalContent select,
+        #editModalContent input,
+        #editModalContent textarea,
+        #editModalContent select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        #modalContent textarea,
+        #editModalContent textarea {
+            min-height: 110px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        #modalContent input:focus,
+        #modalContent select:focus,
+        #modalContent textarea:focus,
+        #editModalContent textarea:focus,
+        #editModalContent input:focus,
+        #editModalContent select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, .15);
+        }
+
+        #pNameValidation,
+        #pDescValidation,
+        #testerValidation,
+        #developerValidation {
+            color: #ef4444;
+            font-size: 11px;
+            min-height: 10px;
+            margin-top: 3px;
+        }
+
+        .modalButtons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        #closeModal,
+        #closeEditModal {
+            flex: 1;
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #closeModal:hover,
+        #closeEditModal:hover {
+            background: #e2e8f0;
+        }
+
+        #submitProject,
+        #submitEditProject {
+            flex: 2;
+            padding: 12px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #submitProject:hover,
+        #submitEditProject:hover {
+            background: #4f46e5;
+        }
+
+        @media(max-width:768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            #projectsList {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div id="navBrand">
+            <span>🐞 Bug Tracker</span>
+        </div>
+        <div id="navRight">
+            <span id="navUser"></span>
+            <a id="logout" href="">Logout</a>
+        </div>
+    </nav>
+
+    <div class="page">
+        <div class="page-header">
+            <h2 class="page-title">Projects</h2>
+            <button id="addProject">+ Add Project</button>
+        </div>
+        <div id="loader" style="text-align:center; padding: 60px 20px; display:none">
+            <div class="spinner"></div>
+            <p style="color:#64748b; margin-top:16px; font-size:14px">Loading...</p>
+        </div>
+        <div id="projectsList"></div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            let token = localStorage.getItem("token")
+            let role = localStorage.getItem("role")
+            let name = localStorage.getItem("name")
+
+            if (!token || !role || !name) {
+                window.location.href = "index.html"
+            }
+            if (role === 'manager') {
+                document.getElementById("managerLabel").style.display = "none"
+                document.getElementById("managerDropdown").style.display = "none"
+                document.getElementById("managerValidation").style.display = "none"
+            }
+
+            document.getElementById("navUser").innerText = "Welcome, " + name
+
+            document.getElementById("loader").style.display = "block"
+
+
+            fetch("https://bug-tracker-api-kwyv.onrender.com/projects", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    if (data.msg === "Token has expired" || data.msg === "Token has been revoked") {
+                        window.location.href = "index.html"
+                        return
+                    }
+                    if (!Array.isArray(data)) {
+                        window.location.href = "index.html"
+                        return
+                    }
+
+                    if (role === "admin" || role === "manager") {
+                        document.getElementById("addProject").style.display = "block"
+                    }
+
+                    document.getElementById("loader").style.display = "none"
+
+                    if (data.length === 0) {
+                        document.getElementById("projectsList").innerHTML =
+                            "<div class='emptyState'>" +
+                            "<div class='icon'>📁</div>" +
+                            "<h3>No Projects Found</h3>" +
+                            "<p>Create your first project to start tracking bugs.</p>" +
+                            "</div>"
+                        return
+                    }
+
+                    let html = ""
+                    let userId = parseInt(localStorage.getItem("userId"))
+
+                    data.forEach(function (project) {
+                        html += "<div class='projectCard' >"
+                        html += "<div class='cardIcon'>📁"
+                        html += "<div class='projectButton'>"
+                        if (role === "admin" || (role === "manager" && project.manager_id === userId)) {
+                            html += "<button class='editBtn' onclick='editProject(" + project.id + ", event)'>✏️</button>"
+                        }
+                        if (role === "admin" || (role === "manager" && project.manager_id === userId)) {
+                            html += "<button class='deleteBtn' onclick='deleteProject(" + project.id + ", event)'>❌</button>"
+                        }
+                        html += "</div>"
+                        html += "</div>"
+                        html += "<h3>" + project.name + "</h3>"
+                        html += "<p>" + project.description + "</p>"
+                        html += "<div class='cardFooter'>"
+                        html += "<span class='badge' onclick=\"window.location.href='bugs.html?projectId=" + project.id + "'\">View Bugs →</span>"
+                        html += "</div>"
+                        html += "</div>"
+                    })
+                    document.getElementById("projectsList").innerHTML = html
+                })
+
+            document.getElementById("addProject").addEventListener("click", function () {
+                document.getElementById("projectModal").style.display = "flex"
+
+                fetch("https://bug-tracker-api-kwyv.onrender.com/users", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                })
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+
+                        let managerList = data.filter(function (user) {
+                            return user.role === "manager"
+                        })
+                        let testerList = data.filter(function (user) {
+                            return user.role === "tester"
+                        })
+                        let devList = data.filter(function (user) {
+                            return user.role === "developer"
+                        })
+
+                        let optionsManager = "<option value='' selected>Select a option</option>"
+                        let optionsTester = "<option value='' selected>Select a option</option>"
+                        let optionDev = "<option value='' selected>Select a option</option>"
+
+                        managerList.forEach(function (user) {
+                            optionsManager += "<option value='" + user.id + "'>" + user.name + "</option>"
+                        })
+                        document.getElementById("managerDropdown").innerHTML = optionsManager
+
+                        testerList.forEach(function (user) {
+                            optionsTester += "<option value='" + user.id + "'>" + user.name + "</option>"
+                        })
+                        document.getElementById("testerDropdown").innerHTML = optionsTester
+
+                        devList.forEach(function (user) {
+                            optionDev += "<option value='" + user.id + "'>" + user.name + "</option>"
+                        })
+                        document.getElementById("developerDropdown").innerHTML = optionDev
+                    })
+
+            })
+
+            document.getElementById("submitProject").addEventListener("click", function () {
+
+                let pName = document.getElementById("projectName").value
+                let pDesc = document.getElementById("projectDesc").value
+                let manager_id = document.getElementById("managerDropdown").value
+                let tester_id = document.getElementById("testerDropdown").value
+                let developer_id = document.getElementById("developerDropdown").value
+
+                if (!pName) {
+                    document.getElementById("pNameValidation").innerText = "Project Name field cannot be empty"
+                    return
+                } else {
+                    document.getElementById("pNameValidation").innerText = ""
+                }
+                if (!pDesc) {
+                    document.getElementById("pDescValidation").innerText = "Project Description field cannot be empty"
+                    return
+                } else {
+                    document.getElementById("pDescValidation").innerText = ""
+                }
+                if (role === 'admin') {
+                    if (!manager_id) {
+                        document.getElementById("managerValidation").innerText = "Please select a manager"
+                        return
+                    } else {
+                        document.getElementById("managerValidation").innerText = ""
+                    }
+                }
+                if (!tester_id) {
+                    document.getElementById("testerValidation").innerText = "Please select a tester"
+                    return
+                } else {
+                    document.getElementById("testerValidation").innerText = ""
+                }
+                if (!developer_id) {
+                    document.getElementById("developerValidation").innerText = "Please select a developer"
+                    return
+                } else {
+                    document.getElementById("developerValidation").innerText = ""
+                }
+
+                fetch("https://bug-tracker-api-kwyv.onrender.com/projects", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({
+                        name: pName,
+                        description: pDesc,
+                        manager_id: parseInt(manager_id),
+                        tester_id: parseInt(tester_id),
+                        developer_id: parseInt(developer_id)
+                    })
+                })
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+                        document.getElementById("projectModal").style.display = "none"
+                        window.location.reload()
+                    })
+            })
+
+            document.getElementById("closeModal").addEventListener("click", function () {
+                document.getElementById("projectModal").style.display = "none"
+
+                document.getElementById("projectName").value = ""
+                document.getElementById("projectDesc").value = ""
+
+                document.getElementById("managerDropdown").value = ""
+                document.getElementById("testerDropdown").value = ""
+                document.getElementById("developerDropdown").value = ""
+
+                document.getElementById("pNameValidation").innerText = ""
+                document.getElementById("pDescValidation").innerText = ""
+                document.getElementById("managerValidation").innerText = ""
+                document.getElementById("testerValidation").innerText = ""
+                document.getElementById("developerValidation").innerText = ""
+            })
+
+            document.getElementById("logout").addEventListener("click", function () {
+                localStorage.clear()
+                setTimeout(function () {
+                    window.location.href = "index.html"
+                }, 1000)
+            })
+
+            document.getElementById("closeEditModal").addEventListener("click", function () {
+                document.getElementById("editProjectModal").style.display = "none"
+                document.getElementById("editPNameValidation").innerText = ""
+                document.getElementById("editPDescValidation").innerText = ""
+                document.getElementById("editManagerDropdown").value = ""
+                document.getElementById("editTesterDropdown").value = ""
+                document.getElementById("editDeveloperDropdown").value = ""
+                document.getElementById("editManagerValidation").innerText = ""
+                document.getElementById("editTesterValidation").innerText = ""
+                document.getElementById("editDeveloperValidation").innerText = ""
+            })
+
+            document.getElementById("submitEditProject").addEventListener("click", function () {
+                let token = localStorage.getItem("token")
+                let eName = document.getElementById("editProjectName").value
+                let eDesc = document.getElementById("editProjectDesc").value
+                let eTester = document.getElementById("editTesterDropdown").value
+                let eDeveloper = document.getElementById("editDeveloperDropdown").value
+                let eManager = document.getElementById("editManagerDropdown").value
+
+                if (!eName) {
+                    document.getElementById("editPNameValidation").innerText = "Project Name cannot be empty"
+                    return
+                } else {
+                    document.getElementById("editPNameValidation").innerText = ""
+                }
+                if (!eDesc) {
+                    document.getElementById("editPDescValidation").innerText = "Description cannot be empty"
+                    return
+                } else {
+                    document.getElementById("editPDescValidation").innerText = ""
+                }
+                if (role === 'admin') {
+                    if (!eManager) {
+                        document.getElementById("editManagerValidation").innerText = "Please select a manager"
+                        return
+                    } else {
+                        document.getElementById("editManagerValidation").innerText = ""
+                    }
+                }
+                if (!eTester) {
+                    document.getElementById("editTesterValidation").innerText = "Please select a tester"
+                    return
+                } else {
+                    document.getElementById("editTesterValidation").innerText = ""
+                }
+                if (!eDeveloper) {
+                    document.getElementById("editDeveloperValidation").innerText = "Please select a developer"
+                    return
+                } else {
+                    document.getElementById("editDeveloperValidation").innerText = ""
+                }
+
+                fetch("https://bug-tracker-api-kwyv.onrender.com/projects/" + currentProjectId, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({
+                        name: eName,
+                        description: eDesc,
+                        manager_id: parseInt(eManager),
+                        tester_id: parseInt(eTester),
+                        developer_id: parseInt(eDeveloper)
+                    })
+                })
+                    .then(function (response) { return response.json() })
+                    .then(function (data) {
+                        document.getElementById("editProjectModal").style.display = "none"
+                        window.location.reload()
+                    })
+            })
+
+
+        }
+
+
+        let currentProjectId = null
+
+        function editProject(projectId, event) {
+            event.stopPropagation()
+            currentProjectId = projectId
+            let token = localStorage.getItem("token")
+            let role = localStorage.getItem("role")
+            let userId = localStorage.getItem("userId")
+
+
+            fetch("https://bug-tracker-api-kwyv.onrender.com/users", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+
+                    let managerList = data.filter(function (user) {
+                        return user.role === "manager"
+                    })
+                    let testerList = data.filter(function (user) {
+                        return user.role === "tester"
+                    })
+                    let devList = data.filter(function (user) {
+                        return user.role === "developer"
+                    })
+
+                    let optionsManager = "<option value='' selected>Select a option</option>"
+                    let optionsTester = "<option value='' selected>Select a option</option>"
+                    let optionDev = "<option value='' selected>Select a option</option>"
+
+                    managerList.forEach(function (user) {
+                        optionsManager += "<option value='" + user.id + "'>" + user.name + "</option>"
+                    })
+                    document.getElementById("editManagerDropdown").innerHTML = optionsManager
+
+                    testerList.forEach(function (user) {
+                        optionsTester += "<option value='" + user.id + "'>" + user.name + "</option>"
+                    })
+                    document.getElementById("editTesterDropdown").innerHTML = optionsTester
+
+                    devList.forEach(function (user) {
+                        optionDev += "<option value='" + user.id + "'>" + user.name + "</option>"
+                    })
+                    document.getElementById("editDeveloperDropdown").innerHTML = optionDev
+
+                    fetch("https://bug-tracker-api-kwyv.onrender.com/projects/" + projectId, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        }
+                    })
+                        .then(function (response) { return response.json() })
+                        .then(function (project) {
+
+                            if (role != 'admin') {
+                                document.getElementById("editManagerLabel").style.display = "none"
+                                document.getElementById("editManagerDropdown").style.display = "none"
+                                document.getElementById("editManagerValidation").style.display = "none"
+                            }
+                            document.getElementById("editProjectName").value = project.name
+                            document.getElementById("editProjectDesc").value = project.description
+                            document.getElementById("editTesterDropdown").value = project.tester_id
+                            document.getElementById("editDeveloperDropdown").value = project.developer_id
+                            document.getElementById("editManagerDropdown").value = project.manager_id
+                            document.getElementById("editProjectModal").style.display = "flex"
+                        })
+                })
+
+
+
+        }
+
+        function deleteProject(projectId, event) {
+            event.stopPropagation()
+            if (!confirm("Are you sure you want to delete this project?")) return
+
+            let token = localStorage.getItem("token")
+            fetch("https://bug-tracker-api-kwyv.onrender.com/projects/" + projectId, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    if (data.Success) {
+                        window.location.reload()
+                    } else {
+                        alert(data.Error)
+                    }
+                })
+        }
+
+
+
+    </script>
+    <div id="projectModal">
+        <div id="modalContent">
+            <h2>Add Project</h2>
+            <label>Project Name</label>
+            <input type="text" id="projectName" placeholder="Enter project name" />
+            <p id="pNameValidation"></p>
+            <label>Description</label>
+            <textarea id="projectDesc" placeholder="Enter description"></textarea>
+            <p id="pDescValidation"></p>
+            <label id="managerLabel">Manager</label>
+            <select id="managerDropdown"></select>
+            <p id="managerValidation"></p>
+            <label>Tester</label>
+            <select id="testerDropdown"></select>
+            <p id="testerValidation"></p>
+            <label>Developer</label>
+            <select id="developerDropdown"></select>
+            <p id="developerValidation"></p>
+            <div class="modalButtons">
+                <button type="button" id="closeModal">Cancel</button>
+                <button type="button" id="submitProject">Add Project</button>
+            </div>
+        </div>
+    </div>
+    <div id="editProjectModal">
+        <div id="editModalContent">
+            <h2>Edit Project</h2>
+            <label>Project Name</label>
+            <input type="text" id="editProjectName" />
+            <p id="editPNameValidation"></p>
+            <label>Description</label>
+            <textarea id="editProjectDesc" placeholder="Enter description"></textarea>
+            <p id="editPDescValidation"></p>
+            <label id="editManagerLabel">Manager</label>
+            <select id="editManagerDropdown"></select>
+            <p id="editManagerValidation"></p>
+            <label>Tester</label>
+            <select id="editTesterDropdown"></select>
+            <p id="editTesterValidation"></p>
+            <label>Developer</label>
+            <select id="editDeveloperDropdown"></select>
+            <p id="editDeveloperValidation"></p>
+            <div class="modalButtons">
+                <button type="button" id="closeEditModal">Cancel</button>
+                <button type="button" id="submitEditProject">Update</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

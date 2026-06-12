@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bug Tracker - Bugs</title>
+    <!-- <style>
+        /* Old Style */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .emptyState {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        .emptyState .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .emptyState h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .emptyState p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef0f3;
+        }
+
+        nav {
+            background-color: #2c3e50;
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #navBrand span {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        #navRight {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        #navUser {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 13px;
+        }
+
+        #logout {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .page {
+            padding: 28px 32px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        #addBug {
+            display: none;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #bugsList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        #bugModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.45);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalContent {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        #modalContent textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 0.5px solid #ccc;
+            border-radius: 7px;
+            font-size: 13px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        #modalContent h2 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        #modalContent label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+            margin-top: 12px;
+        }
+
+        #modalContent input,
+        #modalContent select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 0.5px solid #ccc;
+            border-radius: 7px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .modalButtons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #closeBugModal {
+            flex: 1;
+            padding: 9px;
+            border: 0.5px solid #ccc;
+            background: none;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #submitBug {
+            flex: 2;
+            padding: 9px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .bugCard {
+            background: white;
+            border: 0.5px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 18px;
+            cursor: pointer;
+            border-top: 3px solid #2c3e50;
+            transition: all 0.2s ease;
+        }
+
+        .bugCard h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        .bugCard p {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        .cardIcon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .cardFooter {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 0.5px solid #e0e0e0;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: #eef2f7;
+            color: #2c3e50;
+        }
+
+        .bugCard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        #back {
+            display: inline-block;
+            font-size: 13px;
+            color: #888;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #back:hover {
+            color: #2c3e50;
+        }
+
+        #bugEditSection input,
+        #bugEditSection select,
+        #bugEditSection textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 0.5px solid #ccc;
+            border-radius: 7px;
+            font-size: 13px;
+            box-sizing: border-box;
+            margin: 6px 0;
+        }
+
+        #bugEditSection label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        #bugViewSection p {
+            font-size: 13px;
+            color: #555;
+            padding: 6px 0;
+            border-bottom: 0.5px solid #f0f0f0;
+        }
+
+        #bugViewSection strong {
+            color: #2c3e50;
+            margin-right: 8px;
+        }
+
+        #editBugBtn {
+            background: #2c3e50;
+            color: white;
+            padding: 9px 20px;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #updateBugBtn {
+            background: #27ae60;
+            color: white;
+            padding: 9px 20px;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #closeBugBtn {
+            padding: 9px 20px;
+            border: 0.5px solid #ccc;
+            background: none;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        #bugDetailModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.45);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #bugDetailContent {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            width: 500px;
+            max-width: 90%;
+        }
+
+        #bugTitleValidation,
+        #bugDescValidation,
+        #bugSeverityValidation,
+        #bugPriorityValidation {
+            font-size: 10px;
+            color: #e74c3c;
+            margin-top: 4px;
+            min-height: 6px;
+        }
+
+        .deleteBtn {
+            margin-top: 10px;
+            margin-left: 52px;
+            background: #e74c3c;
+            border: 0.5px solid #eef2f7;
+            color: #eef2f7;
+            padding: 3px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            width: 40%;
+            border-radius: 20px;
+        }
+    </style> -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .emptyState {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .emptyState .icon {
+            font-size: 72px;
+            margin-bottom: 16px;
+        }
+
+        .emptyState h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .emptyState p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        nav {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #navBrand span {
+            font-size: 22px;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        #navRight {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        #navUser {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        #logout {
+            text-decoration: none;
+            background: #ef4444;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        #logout:hover {
+            background: #dc2626;
+        }
+
+        .page {
+            max-width: 1300px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        #projectTitle {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        #back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #475569;
+            margin-bottom: 25px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        #back:hover {
+            background: #f1f5f9;
+        }
+
+        #addBug {
+            display: none;
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        #addBug:hover {
+            background: #4f46e5;
+        }
+
+        #bugsList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 22px;
+        }
+
+        .bugCard {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .bugCard:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .08);
+        }
+
+        .cardIcon {
+            font-size: 28px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bugCard h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .bugCard p {
+            color: #64748b;
+            margin-bottom: 8px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .cardFooter {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+            gap: 5px;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .statusText {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .statusDot {
+            display: inline-block;
+            border-radius: 999px;
+            width: 15px;
+            height: 15px;
+        }
+
+        .severity-high {
+            background: #fee2e2;
+            margin-top: auto;
+            color: #dc2626;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+        }
+
+        .severity-medium {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+        }
+
+        .severity-low {
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+        }
+
+        #bugModal,
+        #bugDetailModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #modalContent,
+        #bugDetailContent {
+            background: white;
+            width: 600px;
+            max-width: 95%;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, .15);
+        }
+
+        #modalContent h2,
+        #bugDetailContent h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        #modalContent label,
+        #bugEditSection label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        #modalContent input,
+        #modalContent textarea,
+        #modalContent select,
+        #bugEditSection input,
+        #bugEditSection textarea,
+        #bugEditSection select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        #modalContent textarea,
+        #bugEditSection textarea {
+            min-height: 110px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        #modalContent input:focus,
+        #modalContent textarea:focus,
+        #modalContent select:focus,
+        #bugEditSection input:focus,
+        #bugEditSection textarea:focus,
+        #bugEditSection select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, .15);
+        }
+
+        .modalButtons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        #closeBugModal,
+        #closeBugBtn {
+            flex: 1;
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        #submitBug {
+            flex: 2;
+            padding: 12px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        #submitBug:hover {
+            background: #4f46e5;
+        }
+
+        #updateBugBtn {
+            flex: 2;
+            padding: 12px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        #bugViewSection p {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        #bugViewSection strong {
+            color: #0f172a;
+            margin-right: 8px;
+        }
+
+        #bugTitleValidation,
+        #bugDescValidation,
+        #bugSeverityValidation,
+        #bugPriorityValidation {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 5px;
+            min-height: 18px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media(max-width:768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            #bugsList {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        #closeBugModal:hover,
+        #closeBugBtn:hover {
+            background: #e2e8f0;
+        }
+
+        #updateBugBtn:hover {
+            background: #15803d;
+        }
+
+        #back:hover {
+            background: #f1f5f9;
+        }
+
+        .editBtn {
+            background: none;
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .editBtn:hover {
+            background: #e0e7ff;
+        }
+
+        .deleteBtn {
+            background: #fef2f2;
+            /* color: #dc2626; */
+            border: 1px solid #fecaca;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+
+        }
+
+        .deleteBtn:hover {
+            background: #fee2e2;
+        }
+
+        .bugsButton {
+            margin-top: 0%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .viewBtn {
+            background: none;
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: .2s;
+            margin: 0px auto;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .viewBtn:hover {
+            background: #e0e7ff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div id="navBrand">
+            <span>🐞 Bug Tracker</span>
+        </div>
+        <div id="navRight">
+            <span id="navUser"></span>
+            <a id="logout" href="">Logout</a>
+        </div>
+    </nav>
+
+    <div class="page">
+        <label id="back" onclick="window.location.href='dashboard.html'">← Back to Projects</label>
+        <div class="page-header">
+            <h3 id="projectTitle"></h3>
+            <button id="addBug">+ Add Bug</button>
+        </div>
+        <div id="loader" style="text-align:center; padding: 60px 20px; display:none">
+            <div class="spinner"></div>
+            <p style="color:#64748b; margin-top:16px; font-size:14px">Loading...</p>
+        </div>
+        <div id="bugsList"></div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            let token = localStorage.getItem("token")
+            let role = localStorage.getItem("role")
+            let name = localStorage.getItem("name")
+            let userId = parseInt(localStorage.getItem("userId"))
+
+            if (!token || !role || !name) {
+                window.location.href = "index.html"
+            }
+            document.getElementById("navUser").innerText = "Welcome, " + name
+
+            let params = new URLSearchParams(window.location.search)
+            let projectId = params.get("projectId")
+            let projectName = fetch("https://bug-tracker-api-kwyv.onrender.com/projects/" + projectId, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    document.getElementById("projectTitle").innerText = data.name + "- Bugs"
+                })
+
+            document.getElementById("loader").style.display = "block"
+
+            fetch("https://bug-tracker-api-kwyv.onrender.com/bugs?project_id=" + projectId, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    if (data.msg === "Token has expired" || data.msg === "Token has been revoked") {
+                        window.location.href = "index.html"
+                        return
+                    }
+                    if (!Array.isArray(data)) {
+                        window.location.href = "index.html"
+                        return
+                    }
+                    if (role === "admin" || role === "tester") {
+                        document.getElementById("addBug").style.display = "block"
+                    }
+
+                    document.getElementById("loader").style.display = "none"
+
+                    if (data.length === 0) {
+                        document.getElementById("bugsList").innerHTML =
+                            "<div class='emptyState'>" +
+                            "<div class='icon'>🐛</div>" +
+                            "<h3>No Bugs Found</h3>" +
+                            "<p>Create your first bug to start tracking.</p>" +
+                            "</div>"
+                        return
+                    }
+
+                    let html = ""
+
+                    let statusColors = {
+                        "Open": "#E24B4A",
+                        "Re-Opened": "#A32D2D",
+                        "Assigned": "#378ADD",
+                        "In-Progress": "#7F77DD",
+                        "Hold": "#EF9F27",
+                        "Fixed": "#1D9E75",
+                        "Re-Test": "#D85A30",
+                        "Closed": "#639922",
+                        "Rejected": "#888780"
+                    }
+                    data.forEach(function (bug) {
+                        let sev = bug.severity.toLowerCase()
+                        let borderColor = sev === "high" ? "#e74c3c" : sev === "medium" ? "#f39c12" : "#27ae60"
+                        html += "<div class='bugCard' style='border-top-color:" + borderColor + "'>"
+                        html += "<div class='cardIcon'>🐛"
+                        html += "<div class='bugsButton'>"
+                        if (role === "admin" || (role === "tester" && bug.reporter_id === userId) || (role === "developer" && bug.assignee_id === userId)) {
+                            html += "<button class='editBtn' onclick='openBugEdit(" + bug.id + ", event)'>✏️</button>"
+                        }
+                        if (role === "admin") {
+                            html += "<button class='deleteBtn' onclick='deleteBug(" + bug.id + ", event)'>❌</button>"
+                        }
+                        html += "</div>"
+                        html += "</div>"
+                        html += "<h3>Title: " + bug.title + "</h3>"
+                        html += "<p>Description: " + bug.description + "</p>"
+                        html += "<p>Severity: <span class='severity-" + bug.severity.toLowerCase() + "'>" + bug.severity + "</span></p>"
+                        html += "<p>Priority: <span class='severity-" + bug.priority.toLowerCase() + "'>" + bug.priority + "</span></p>"
+                        let statusColor = statusColors[bug.status]
+                        html += "<div class='cardFooter'>"
+                        html += "<span class='statusDot' style = 'background:" + statusColor + "' ></span>"
+                        html += "<span class='statusText'>" + bug.status + "</span>"
+                        html += "</div>"
+                        html += "<button class='viewBtn' onclick='openBugDetail(" + bug.id + ")'>View Details</button>"
+                        html += "</div>"
+                    })
+                    document.getElementById("bugsList").innerHTML = html
+                })
+
+            document.getElementById("addBug").addEventListener("click", function () {
+                document.getElementById("bugModal").style.display = "flex"
+            })
+
+            document.getElementById("submitBug").addEventListener("click", function () {
+
+                let bTitle = document.getElementById("bugTitle").value
+                let bDesc = document.getElementById("bugDesc").value
+                let bSeverity = document.getElementById("severityDropdown").value
+                let bPriority = document.getElementById("priorityDropdown").value
+
+                if (!bTitle) {
+                    document.getElementById("bugTitleValidation").innerText = "Bug Title cannot be empty"
+                    return
+                } else {
+                    document.getElementById("bugTitleValidation").innerText = ""
+                }
+                if (!bDesc) {
+                    document.getElementById("bugDescValidation").innerText = "Bug Description cannot be empty"
+                    return
+                } else {
+                    document.getElementById("bugDescValidation").innerText = ""
+                }
+                if (!bSeverity) {
+                    document.getElementById("bugSeverityValidation").innerText = "Select a option"
+                    return
+                } else {
+                    document.getElementById("bugSeverityValidation").innerText = ""
+                }
+                if (!bPriority) {
+                    document.getElementById("bugPriorityValidation").innerText = "Select a option"
+                    return
+                } else {
+                    document.getElementById("bugPriorityValidation").innerText = ""
+                }
+
+                fetch("https://bug-tracker-api-kwyv.onrender.com/bugs", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify({
+                        title: bTitle,
+                        description: bDesc,
+                        severity: bSeverity,
+                        priority: bPriority,
+                        project_id: parseInt(projectId)
+                    })
+                })
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+                        document.getElementById("bugModal").style.display = "none"
+                        window.location.reload()
+                    })
+            })
+
+            document.getElementById("closeBugModal").addEventListener("click", function () {
+                document.getElementById("bugModal").style.display = "none"
+
+                document.getElementById("bugTitle").value = ""
+                document.getElementById("bugDesc").value = ""
+                document.getElementById("severityDropdown").value = ""
+                document.getElementById("priorityDropdown").value = ""
+
+                document.getElementById("bugTitleValidation").innerText = ""
+                document.getElementById("bugDescValidation").innerText = ""
+                document.getElementById("bugSeverityValidation").innerText = ""
+                document.getElementById("bugPriorityValidation").innerText = ""
+            })
+
+            document.getElementById("logout").addEventListener("click", function () {
+                localStorage.clear()
+                setTimeout(function () {
+                    window.location.href = "index.html"
+                }, 1000)
+            })
+
+            document.getElementById("closeBugBtn").addEventListener("click", function () {
+                document.getElementById("bugDetailModal").style.display = "none"
+            })
+
+            document.getElementById("updateBugBtn").addEventListener("click", function () {
+                let token = localStorage.getItem("token")
+                let role = localStorage.getItem("role")
+
+                let body = {
+                    status: document.getElementById("detailStatus").value
+                }
+
+                if (role === "admin" || role === "tester") {
+                    body.title = document.getElementById("detailTitle").value
+                    body.description = document.getElementById("detailDesc").value
+                    body.severity = document.getElementById("detailSeverity").value
+                    body.priority = document.getElementById("detailPriority").value
+                }
+
+                fetch("https://bug-tracker-api-kwyv.onrender.com/bugs/" + currentBugId, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+                    body: JSON.stringify(body)
+                })
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+                        document.getElementById("bugDetailModal").style.display = "none"
+                        window.location.reload()
+                    })
+            })
+        }
+
+        let currentBugId = null
+
+        function openBugDetail(bugId) {
+            currentBugId = bugId
+            loadBugData(bugId, "view")
+        }
+
+        function openBugEdit(bugId, event) {
+            event.stopPropagation()
+            currentBugId = bugId
+            loadBugData(bugId, "edit")
+        }
+
+        function loadBugData(bugId, mode) {
+            let token = localStorage.getItem("token")
+            let role = localStorage.getItem("role")
+
+            fetch("https://bug-tracker-api-kwyv.onrender.com/bugs/" + bugId, {
+                method: "GET",
+                headers: { "Authorization": "Bearer " + token }
+            })
+                .then(function (response) { return response.json() })
+                .then(function (bug) {
+                    // Fill view section
+                    document.getElementById("viewTitle").innerText = bug.title
+                    document.getElementById("viewDesc").innerText = bug.description
+                    document.getElementById("viewSeverity").innerText = bug.severity
+                    document.getElementById("viewPriority").innerText = bug.priority
+                    document.getElementById("viewStatus").innerText = bug.status
+                    document.getElementById("viewCreatedAt").innerText = bug.created_at
+
+                    // Fill edit section
+                    document.getElementById("detailTitle").value = bug.title
+                    document.getElementById("detailDesc").value = bug.description
+                    document.getElementById("detailSeverity").value = bug.severity
+                    document.getElementById("detailPriority").value = bug.priority
+                    document.getElementById("detailStatus").value = bug.status
+
+                    // Developer field hiding
+                    if (role === "developer") {
+                        document.getElementById("fieldTitle").style.display = "none"
+                        document.getElementById("fieldDesc").style.display = "none"
+                        document.getElementById("fieldSeverity").style.display = "none"
+                        document.getElementById("fieldPriority").style.display = "none"
+                    } else {
+                        document.getElementById("fieldTitle").style.display = "block"
+                        document.getElementById("fieldDesc").style.display = "block"
+                        document.getElementById("fieldSeverity").style.display = "block"
+                        document.getElementById("fieldPriority").style.display = "block"
+                    }
+
+                    // Show correct mode
+                    if (mode === "view") {
+                        document.getElementById("bugViewSection").style.display = "block"
+                        document.getElementById("bugEditSection").style.display = "none"
+                        document.getElementById("updateBugBtn").style.display = "none"
+                    } else {
+                        document.getElementById("bugViewSection").style.display = "none"
+                        document.getElementById("bugEditSection").style.display = "block"
+                        document.getElementById("updateBugBtn").style.display = "block"
+                    }
+                    document.getElementById("bugDetailModal").style.display = "flex"
+                })
+        }
+
+        function deleteBug(bugId, event) {
+            event.stopPropagation()
+            if (!confirm("Are you sure you want to delete this bug?")) return
+
+            let token = localStorage.getItem("token")
+            fetch("https://bug-tracker-api-kwyv.onrender.com/bugs/" + bugId, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    if (data.Success) {
+                        window.location.reload()
+                    } else {
+                        alert(data.Error)
+                    }
+                })
+        }
+
+    </script>
+    <div id="bugModal">
+        <div id="modalContent">
+            <h2>Add Bug</h2>
+            <label>Bug Title</label>
+            <input type="text" id="bugTitle" placeholder="Enter bug title" />
+            <p id="bugTitleValidation"></p>
+            <label>Description</label>
+            <textarea id="bugDesc" placeholder="Describe the bug"></textarea>
+            <p id="bugDescValidation"></p>
+            <label>Severity</label>
+            <select id="severityDropdown">
+                <option value="" selected>Select a option</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <p id="bugSeverityValidation"></p>
+            <label>Priority</label>
+            <select id="priorityDropdown">
+                <option value="" selected>Select a option</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <p id="bugPriorityValidation"></p>
+            <div class="modalButtons">
+                <button type="button" id="closeBugModal">Cancel</button>
+                <button type="button" id="submitBug">Add Bug</button>
+            </div>
+        </div>
+    </div>
+    <div id="bugDetailModal">
+        <div id="bugDetailContent">
+            <h2>Bug Details</h2>
+            <div id="bugViewSection" style="display:none">
+                <p><strong>Title:</strong> <span id="viewTitle"></span></p>
+                <p><strong>Description:</strong> <span id="viewDesc"></span></p>
+                <p><strong>Severity:</strong> <span id="viewSeverity"></span></p>
+                <p><strong>Priority:</strong> <span id="viewPriority"></span></p>
+                <p><strong>Status:</strong> <span id="viewStatus"></span></p>
+                <p><strong>Created at:</strong> <span id="viewCreatedAt"></span></p>
+            </div>
+            <div id="bugEditSection" style="display:none">
+                <div id="fieldTitle">
+                    <label>Bug Title</label>
+                    <input type="text" id="detailTitle" />
+                </div>
+                <div id="fieldDesc">
+                    <label>Description</label>
+                    <textarea type="text" id="detailDesc"></textarea>
+                </div>
+                <div id="fieldSeverity">
+                    <label>Severity</label>
+                    <select id="detailSeverity">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+                <div id="fieldPriority">
+                    <label>Priority</label>
+                    <select id="detailPriority">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+                <div id="fieldStatus">
+                    <label>Status</label>
+                    <select id="detailStatus">
+                        <option value="Open">Open</option>
+                        <option value="Assigned">Assigned</option>
+                        <option value="In-Progress">In-Progress</option>
+                        <option value="Fixed">Fixed</option>
+                        <option value="Re-Test">Re-Test</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Re-Opened">Re-Opened</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Hold">Hold</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modalButtons">
+                <button type="button" id="closeBugBtn">Cancel</button>
+                <button type="button" id="updateBugBtn" style="display:none">Update</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
