@@ -1,89 +1,214 @@
-# Bug Tracker API
-A REST API built for bug tracking for a organisation with JWT Authentication specific roles divided between users authorized user could do specific tasks.
-- user with manager role could add/update projects, assign tester and developer to projects
-- user with tester role could add/update bugs to the projects they are assigned
-- user with developer role could update bugs to the projects they are assigned
+# 🐞 Bug Tracker
 
-## Features
-- User registration and login
+A full-stack bug tracking application built for organisations with role-based access control and JWT authentication. Users are assigned specific roles and can only perform actions permitted for their role.
+
+> **Live API:** https://bug-tracker-api-kwyv.onrender.com
+
+---
+
+## 📁 Project Structure
+
+```
+bug-tracker-api/
+├── app.py                        # App entry point, config, blueprints
+├── models.py                     # Database models (User, Project, Bug)
+├── extensions.py                 # db and bcrypt instances
+├── routes/
+│   ├── auth.py                   # Register, login, user management
+│   ├── projects.py               # Project CRUD
+│   └── bugs.py                   # Bug CRUD
+├── bug-tracker-frontend/
+│   ├── index.html                # Login page
+│   ├── register.html             # Registration page
+│   ├── dashboard.html            # Projects dashboard
+│   └── bugs.html                 # Bug listing per project
+├── requirements.txt
+├── Procfile
+└── README.md
+```
+
+---
+
+## ✨ Features
+
+### Backend
+- User registration and login with bcrypt password hashing
 - JWT token authentication
-- Get all Projects
-- Get a specific Project with it's id
-- Create a New Project
-- Update a Project
-- Delete a Project
-- Protected routes — only authenticated users can create/update projects
-- Get all Bugs
-- Get a specific Bugs with it's id
-- Create a new Bug
-- Update a Bug
-- Delete a Bug
+- Role-based access control — 4 roles with specific permissions
+- Full CRUD for Projects and Bugs
+- Bugs automatically linked to project's assigned developer on creation
+- Reporter and assignee tracked on each bug
+- CORS enabled for frontend integration
 
-## Tech Stack
-- Python
-- Flask
-- SQLite
-- SQLAlchemy
-- Flask-JWT-Extended
-- Flask-Bcrypt
+### Frontend
+- Login and registration with client-side form validation
+- Role-based UI — buttons and actions shown/hidden based on logged-in role
+- Projects dashboard — view, add, edit, delete projects
+- Per-project bug listing — view, add, edit, delete bugs
+- Bug detail modal — view mode and edit mode
+- 9 bug statuses with unique color indicators
+- Severity and priority color-coded badges
+- Responsive modern UI
 
-## Roles & Permissions table
-| Role | admin | manager | tester | developer |
-|------|-------|---------|--------|-----------|
-| Permissions |  |  |  |  |
-| Manage users | Yes | No | No | No |
-| Create project | Yes | Yes | No | No |
-| View all projects | Yes | Yes | Yes | Yes |
-| Update project | Yes | Yes | No | No |
-| Assign team | Yes | Yes | No | No |
-| Report bug | Yes | No | Yes | No |
-| Update bug status | Yes | No | Yes | Yes |
-| View all bugs | Yes | Yes | Yes | Yes |
-| Delete anything | Yes | No | No | No |
+---
 
-## Setup instructions
+## 🛠️ Tech Stack
+
+### Backend
+| Technology | Purpose |
+|---|---|
+| Python | Core language |
+| Flask | Web framework |
+| PostgreSQL | Production database |
+| SQLAlchemy | ORM |
+| Flask-JWT-Extended | JWT authentication |
+| Flask-Bcrypt | Password hashing |
+| Flask-CORS | Cross-origin requests |
+
+### Frontend
+| Technology | Purpose |
+|---|---|
+| HTML | Structure |
+| CSS | Styling |
+| JavaScript (Vanilla) | Logic and API calls |
+
+### Deployment
+| Service | Usage |
+|---|---|
+| Render | Backend hosting |
+| Render | PostgreSQL database |
+
+---
+
+## 👥 Roles & Permissions
+
+| Permission | admin | manager | tester | developer |
+|---|---|---|---|---|
+| View all users | ✅ | ✅ | ❌ | ❌ |
+| Delete user | ✅ | ❌ | ❌ | ❌ |
+| Create project | ✅ | ✅ | ❌ | ❌ |
+| View projects | ✅ | ✅ | ✅ (assigned only) | ✅ (assigned only) |
+| Update project | ✅ | ✅ (own projects) | ❌ | ❌ |
+| Delete project | ✅ | ✅ (own projects) | ❌ | ❌ |
+| Report bug | ✅ | ❌ | ✅ (assigned project) | ❌ |
+| Update bug title/severity/priority | ✅ | ❌ | ✅ (assigned project) | ❌ |
+| Update bug status | ✅ | ❌ | ✅ (assigned project) | ✅ (assigned project) |
+| View bugs | ✅ | ✅ | ✅ | ✅ |
+| Delete bug | ✅ | ❌ | ❌ | ❌ |
+
+---
+
+## ⚙️ Local Setup
+
+### Prerequisites
+- Python 3.8+
+- PostgreSQL database (or update `DATABASE_URL` to use SQLite for local dev)
+
+### Steps
+
 1. Clone the repository
-2. Create virtual environment - 
-    python -m venv venv
-3. Activate virtual environment - 
-    venv\Scripts\activate
-4. Install dependencies - 
-    pip install -r requirements.txt
-5. Run the app - 
-    python app.py
+   ```bash
+   git clone https://github.com/HimanshuAryaa/bug-tracker-api.git
+   cd bug-tracker-api
+   ```
 
-## API Endpoints
+2. Create and activate virtual environment
+   ```bash
+   python -m venv venv
+
+   # Windows
+   venv\Scripts\activate
+
+   # Mac/Linux
+   source venv/bin/activate
+   ```
+
+3. Install dependencies
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Set environment variables
+
+   In `app.py`, update these two lines before running locally:
+   ```python
+   app.config["SQLALCHEMY_DATABASE_URI"] = "your_database_url_here"
+   app.config["JWT_SECRET_KEY"] = "your_secret_key_here"
+   ```
+
+   > ⚠️ For production, move these to environment variables and never hardcode them.
+
+5. Run the app
+   ```bash
+   python app.py
+   ```
+
+   The API will be available at `http://localhost:5000`
+
+### Frontend Setup
+
+1. Open the `bug-tracker-frontend/` folder
+2. Open `index.html` in your browser
+3. By default the frontend connects to the live API at `https://bug-tracker-api-kwyv.onrender.com`
+4. To use your local backend, find and replace the base URL in each HTML file:
+   ```
+   https://bug-tracker-api-kwyv.onrender.com  →  http://localhost:5000
+   ```
+
+---
+
+## 🔌 API Endpoints
 
 ### Auth (No token required)
+
 | Method | Endpoint | Description |
-|--------|----------|-------------|
+|---|---|---|
 | POST | `/register` | Register a new user |
-| POST | `/login` | Login and get JWT token |
+| POST | `/login` | Login and receive JWT token |
+
+### Users (Token required)
+
+| Method | Endpoint | Description | Who |
+|---|---|---|---|
+| GET | `/users` | Get all users | admin, manager |
+| DELETE | `/users/<id>` | Delete a user | admin only |
 
 ### Projects (Token required)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/projects` | Get all Projects |
-| GET | `/projects/<int:id>` | Get Specific Project with id |
-| POST | `/projects` | Create a Project |
-| PUT | `/projects/<int:id>` | Update a Project |
-| DELETE | `/projects/<int:id>` | Delete a Project |
+
+| Method | Endpoint | Description | Who |
+|---|---|---|---|
+| GET | `/projects` | Get accessible projects | all roles |
+| GET | `/projects/<id>` | Get a specific project | all roles |
+| POST | `/projects` | Create a project | admin, manager |
+| PUT | `/projects/<id>` | Update a project | admin, manager |
+| DELETE | `/projects/<id>` | Delete a project | admin, manager (own) |
 
 ### Bugs (Token required)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/bugs` | Get all Bugs |
-| GET | `/bugs/<int:id>` | Get Specific Bug with id |
-| POST | `/bugs` | Create a Bug |
-| PUT | `/bugs/<int:id>` | Update a Bug |
-| DELETE | `/bugs/<int:id>` | Delete a bug |
 
-## How to use authentication
+| Method | Endpoint | Description | Who |
+|---|---|---|---|
+| GET | `/bugs` | Get all bugs | all roles |
+| GET | `/bugs/<id>` | Get a specific bug | all roles |
+| POST | `/bugs` | Create a bug | admin, tester |
+| PUT | `/bugs/<id>` | Update a bug | admin, tester, developer |
+| DELETE | `/bugs/<id>` | Delete a bug | admin only |
+
+---
+
+## 🔐 Authentication
+
 1. Register a user via `/register`
-2. Login via `/login` to get your token
-3. Add the token to requests as Bearer Token in Authorization header
+2. Login via `/login` — receive a JWT token in the response
+3. Include the token in all subsequent requests:
+   ```
+   Authorization: Bearer <your_token>
+   ```
 
-## Register Payload Example
+---
+
+## 📝 Payload Examples
+
+### Register
 ```json
 {
     "name": "John",
@@ -92,4 +217,75 @@ A REST API built for bug tracking for a organisation with JWT Authentication spe
     "role": "manager"
 }
 ```
-Available roles: `admin`, `manager`, `tester`, `developer`
+Available roles: `admin` `manager` `tester` `developer`
+
+### Login
+```json
+{
+    "email": "john@gmail.com",
+    "password": "123456"
+}
+```
+Response includes: `Token`, `role`, `name`, `id`
+
+### Create Project (admin / manager)
+```json
+{
+    "name": "E-Commerce Website",
+    "description": "Frontend and backend bug tracking",
+    "manager_id": 2,
+    "tester_id": 3,
+    "developer_id": 4
+}
+```
+> Note: `manager_id` is only required when an admin creates a project. Managers are automatically set as the manager of projects they create.
+
+### Create Bug (admin / tester)
+```json
+{
+    "title": "Login page crashes on submit",
+    "description": "App throws 500 error when login form is submitted",
+    "severity": "High",
+    "priority": "High",
+    "project_id": 1
+}
+```
+> Bug is automatically assigned to the project's developer. Status defaults to `Open`.
+
+### Update Bug — tester (title + status)
+```json
+{
+    "title": "Updated title",
+    "severity": "Medium",
+    "status": "Re-Test"
+}
+```
+
+### Update Bug — developer (status only)
+```json
+{
+    "status": "In-Progress"
+}
+```
+
+Available statuses: `Open` `Assigned` `In-Progress` `Fixed` `Re-Test` `Closed` `Re-Opened` `Rejected` `Hold`
+
+---
+
+## 🔄 Bug Status Flow
+
+```
+Open → Assigned → In-Progress → Fixed → Re-Test → Closed
+                                             ↓
+                                        Re-Opened → In-Progress
+                                        Rejected
+                                        Hold
+```
+
+---
+
+## ⚠️ Known Limitations
+
+- JWT tokens are not revoked on logout — tokens remain valid until expiry
+- `JWT_SECRET_KEY` is currently hardcoded in `app.py` — move to environment variable before production use
+- Database expires on Render free tier — will need renewal or migration to a paid plan for persistent data
